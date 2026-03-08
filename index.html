@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAC Lending — Lead Generation Strategy Intake</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1D3A;
+    --navy-mid: #132B52;
+    --navy-light: #1A3A6B;
+    --gold: #C9A84C;
+    --gold-light: #E0C76E;
+    --gold-dim: rgba(201, 168, 76, 0.15);
+    --cream: #F5F0E8;
+    --white: #FFFFFF;
+    --text-muted: #8A9BB5;
+    --border: rgba(201, 168, 76, 0.25);
+    --error: #E06B5E;
+    --success: #5EC87A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(26, 58, 107, 0.4) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s ease-out;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .header h1 span {
+    color: var(--gold);
+  }
+
+  .header p {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-bottom: 40px;
+    animation: fadeDown 0.8s ease-out 0.1s both;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .progress-labels span {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.4s;
+  }
+
+  .progress-labels span.active { color: var(--gold); }
+
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--navy-mid);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Sections */
+  .section {
+    background: linear-gradient(135deg, var(--navy-mid), rgba(19, 43, 82, 0.7));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 32px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.3s; }
+
+  .section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  /* Form fields */
+  .field {
+    margin-bottom: 22px;
+  }
+
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  label .required {
+    color: var(--gold);
+    margin-left: 2px;
+  }
+
+  label .hint {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 12px;
+    display: block;
+    margin-top: 3px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(11, 29, 58, 0.6);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    border-radius: 10px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: rgba(138, 155, 181, 0.5);
+  }
+
+  textarea { resize: vertical; min-height: 100px; }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23C9A84C' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  select option {
+    background: var(--navy);
+    color: var(--cream);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .row { grid-template-columns: 1fr; }
+    .section { padding: 28px 20px; }
+    .container { padding: 24px 16px 60px; }
+  }
+
+  /* Checkbox group */
+  .check-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 600px) {
+    .check-group { grid-template-columns: 1fr; }
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s;
+    user-select: none;
+  }
+
+  .check-item:hover {
+    border-color: rgba(201, 168, 76, 0.35);
+    background: rgba(201, 168, 76, 0.04);
+  }
+
+  .check-item.checked {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .check-item input { display: none; }
+
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(201, 168, 76, 0.3);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s;
+  }
+
+  .check-item.checked .check-box {
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+
+  .check-box svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s;
+  }
+
+  .check-item.checked .check-box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .check-label {
+    font-size: 14px;
+    color: var(--cream);
+  }
+
+  /* Submit */
+  .submit-wrap {
+    text-align: center;
+    margin-top: 36px;
+    animation: fadeUp 0.6s ease-out 0.35s both;
+  }
+
+  .btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 48px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border: none;
+    border-radius: 12px;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(201, 168, 76, 0.3);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201, 168, 76, 0.4);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
+  .btn-submit svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .submit-note {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 14px;
+  }
+
+  /* Output modal */
+  .output-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(11, 29, 58, 0.92);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+
+  .output-overlay.show { display: flex; }
+
+  .output-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 36px;
+    max-width: 760px;
+    width: 100%;
+    animation: fadeUp 0.4s ease-out;
+  }
+
+  .output-card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .output-card p.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+
+  .output-content {
+    background: rgba(11, 29, 58, 0.5);
+    border: 1px solid rgba(201, 168, 76, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--cream);
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .output-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .btn-copy, .btn-close {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    border: none;
+  }
+
+  .btn-copy {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .btn-copy:hover { background: var(--gold-light); }
+
+  .btn-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--cream);
+  }
+
+  .btn-close:hover { border-color: var(--gold); }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <span class="active">Loan Type</span>
+      <span>Who to Target</span>
+      <span>Delivery</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <form id="intakeForm" novalidate>
+
+    <!-- Section 1: Loan Type -->
+    <div class="section" data-section="1">
+      <div class="section-number">1</div>
+      <h2>Select Loan Type</h2>
+      <p class="section-desc">Which loan products should I be generating leads for?</p>
+
+      <div class="field">
+        <label>Loan Types <span class="required">*</span></label>
+        <div class="check-group" id="loan_types">
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="va">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">VA Loans</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="fha">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">FHA</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="conventional">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Conventional</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="jumbo">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Jumbo / High-Balance</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="usda">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">USDA</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="reverse">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Reverse Mortgage</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="refi">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Refinance / IRRRL</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="loan_types" value="hud-184">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">HUD Section 184</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>States You're Licensed In <span class="required">*</span></label>
+        <input type="text" name="states_licensed" placeholder="e.g. FL, AZ, TX, CA" required>
+      </div>
+    </div>
+
+    <!-- Section 2: Who to Target -->
+    <div class="section" data-section="2">
+      <div class="section-number">2</div>
+      <h2>Who Should I Be Targeting?</h2>
+      <p class="section-desc">Tell me about the specific people you want me putting in front of you.</p>
+
+      <div class="field">
+        <label>Priority Audiences <span class="required">*</span>
+          <span class="hint">Pick your top money-makers. I'll build campaigns around these.</span>
+        </label>
+        <div class="check-group" id="segments">
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="segments" value="snowbirds">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Snowbirds (seasonal / relocating)</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="segments" value="veterans">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Veterans / Active Military</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="segments" value="first-time">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">First-Time Homebuyers</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="segments" value="refi-prospects">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Refi Prospects (rate shoppers)</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="segments" value="investors">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Real Estate Investors</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="segments" value="55-plus">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">55+ / Retirees</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Snowbird Details
+          <span class="hint">Where are they coming FROM? What are they buying? (Condos, 55+ communities, second homes, converting seasonal to permanent?)</span>
+        </label>
+        <textarea name="snowbird_details" placeholder="e.g. Retirees from NY, NJ, OH moving to SE Florida. Looking at condos in 55+ communities in Broward/Palm Beach. Also second-home buyers in Naples/Fort Myers area..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>VA / HUD Details
+          <span class="hint">Which programs specifically? Any military bases nearby? Active duty vs. retired?</span>
+        </label>
+        <textarea name="va_details" placeholder="e.g. VA purchase loans near MacDill AFB and Patrick SFB. Also VA IRRRL streamline refis for existing VA borrowers. Open to HUD 184 if applicable..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Target Geographic Areas <span class="required">*</span>
+          <span class="hint">Where should I be running ads? Specific cities, counties, zip codes, or metros.</span>
+        </label>
+        <textarea name="geo_targets" placeholder="e.g. Miami-Dade, Broward, Palm Beach counties. Also Tampa Bay area. For snowbird ads, target NYC, NJ, Ohio metros with FL destination messaging." required></textarea>
+      </div>
+
+      <div class="field">
+        <label>Any audiences I should AVOID targeting?
+          <span class="hint">Anything that would waste ad spend or that you can't service</span>
+        </label>
+        <textarea name="avoid_audiences" placeholder="e.g. No investment properties over $1M, can't do construction loans, don't target military spouses without the veteran..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 3: Lead Delivery -->
+    <div class="section" data-section="3">
+      <div class="section-number">3</div>
+      <h2>Lead Delivery</h2>
+      <p class="section-desc">How do you want to receive the leads?</p>
+
+      <div class="field">
+        <label>How do you want leads delivered? <span class="required">*</span></label>
+        <div class="check-group">
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="delivery" value="phone-call">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Direct phone call / transfer</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="delivery" value="email">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Email with lead info</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="delivery" value="text">
+            <span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0B1D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Text / SMS notification</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-wrap">
+      <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">
+        Submit
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <p class="submit-note">Your answers will be sent directly when you hit submit.</p>
+    </div>
+
+  </form>
+</div>
+
+<!-- Success Overlay -->
+<div class="output-overlay" id="successOverlay">
+  <div class="output-card" style="text-align:center;">
+    <div style="font-size:56px;margin-bottom:16px;color:var(--gold);">&#10003;</div>
+    <h2>Submitted!</h2>
+    <p class="subtitle" style="margin-bottom:0;">Your info has been sent. We'll be in touch with your lead campaign plan soon.</p>
+  </div>
+</div>
+
+<!-- Error Overlay -->
+<div class="output-overlay" id="errorOverlay">
+  <div class="output-card" style="text-align:center;">
+    <div style="font-size:56px;margin-bottom:16px;color:var(--error);">&#9888;</div>
+    <h2>Something went wrong</h2>
+    <p class="subtitle">Couldn't submit. Copy your answers below and email them instead.</p>
+    <div class="output-content" id="fallbackContent" style="text-align:left;margin-top:16px;"></div>
+    <div class="output-actions" style="justify-content:center;">
+      <button class="btn-copy" onclick="copyFallback()">Copy to Clipboard</button>
+      <button class="btn-copy" onclick="emailFallback()" style="display:inline-flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+        Email Instead
+      </button>
+      <button class="btn-close" onclick="document.getElementById('errorOverlay').classList.remove('show')">Back to Form</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════
+  // FORMSPREE SETUP (takes 30 seconds):
+  // 1. Go to https://formspree.io and sign up free
+  // 2. Create a new form, set email to gregoryayala7@gmail.com
+  // 3. Copy your form ID (looks like: xyzabcde)
+  // 4. Paste it below replacing YOUR_FORM_ID
+  // ═══════════════════════════════════════
+  const FORMSPREE_ID = 'xgonoeen';
+
+  // Checkbox toggle
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    const cb = el.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    updateProgress();
+  }
+
+  // Progress bar
+  function updateProgress() {
+    const form = document.getElementById('intakeForm');
+    const fields = form.querySelectorAll('input[required], select[required], textarea[required]');
+    let filled = 0;
+    fields.forEach(f => {
+      if (f.value && f.value.trim()) filled++;
+    });
+    const checks = form.querySelectorAll('.check-item.checked');
+    const totalSignals = fields.length + 3;
+    const filledSignals = filled + Math.min(checks.length, 3);
+    const pct = Math.min(100, Math.round((filledSignals / totalSignals) * 100));
+    document.getElementById('progressFill').style.width = pct + '%';
+    const labels = document.querySelectorAll('.progress-labels span');
+    labels.forEach((l, i) => {
+      l.classList.toggle('active', pct >= i * 33);
+    });
+  }
+
+  document.getElementById('intakeForm').addEventListener('input', updateProgress);
+
+  // Build brief text
+  function buildBrief() {
+    const form = document.getElementById('intakeForm');
+    const fd = new FormData(form);
+    const getChecked = (name) => {
+      const items = form.querySelectorAll(`input[name="${name}"]:checked`);
+      return Array.from(items).map(i => i.parentElement.querySelector('.check-label').textContent).join(', ') || 'None selected';
+    };
+    const val = (name) => fd.get(name) || '(not provided)';
+
+    return `LOAN TYPES: ${getChecked('loan_types')}
+Licensed States: ${val('states_licensed')}
+
+TARGET AUDIENCES: ${getChecked('segments')}
+
+Snowbird Details: ${val('snowbird_details')}
+
+VA / HUD Details: ${val('va_details')}
+
+Target Geographies: ${val('geo_targets')}
+
+Audiences to AVOID: ${val('avoid_audiences')}
+
+LEAD DELIVERY: ${getChecked('delivery')}`;
+  }
+
+  // Submit to Formspree
+  async function submitForm() {
+    const btn = document.getElementById('submitBtn');
+    const origHTML = btn.innerHTML;
+    btn.innerHTML = 'Sending...';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+
+    const brief = buildBrief();
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'PAC Lending - New Lead Gen Brief',
+          brief: brief
+        })
+      });
+
+      if (res.ok) {
+        document.getElementById('successOverlay').classList.add('show');
+      } else {
+        throw new Error('fail');
+      }
+    } catch (err) {
+      document.getElementById('fallbackContent').textContent = brief;
+      document.getElementById('errorOverlay').classList.add('show');
+    }
+
+    btn.innerHTML = origHTML;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+
+  // Fallbacks
+  function copyFallback() {
+    const text = document.getElementById('fallbackContent').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btns = document.getElementById('errorOverlay').querySelectorAll('.btn-copy');
+      btns[0].textContent = 'Copied!';
+      setTimeout(() => btns[0].textContent = 'Copy to Clipboard', 2000);
+    });
+  }
+
+  function emailFallback() {
+    const text = document.getElementById('fallbackContent').textContent;
+    const subject = encodeURIComponent('PAC Lending - Lead Gen Brief');
+    const body = encodeURIComponent(text);
+    window.open(`mailto:gregoryayala7@gmail.com?subject=${subject}&body=${body}`, '_self');
+  }
+</script>
+
+</body>
+</html>
